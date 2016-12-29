@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>canvas划线</title>
+	<style>
+		* {
+			padding: 0;
+			margin: 0;
+		}
+		body {
+			background: #000;
+		}
+		#c {
+			background: #fff;
+		}
+	</style>
+</head>
+<script>
+	window.onload = function () {
+
+		var C1 = document.getElementById('c');
+		var oC1 = C1.getContext('2d');	
+		
+		C1.onmousedown = function (ev) {
+			var e = ev || window.event;
+			oC1.moveTo(e.clientX-C1.offsetLeft,e.clientY-C1.offsetTop);
+			document.onmousemove = function (ev) {
+				var e = ev || window.event;
+				oC1.lineTo(e.clientX-C1.offsetLeft,e.clientY-C1.offsetTop);
+				oC1.stroke();
+			}
+			document.onmouseup = function () {
+				document.onmousemove = null;
+				document.onmouseup = null;
+			}
+		}
+
+	}
+
+</script>
+<body>
+	<!-- 默认的 width:300; height；150 -->
+	<canvas id="c" width="400" height="400">不支持的显示</canvas>
+</body>
+</html>
