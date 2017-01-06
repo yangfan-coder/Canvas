@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>canvas 时钟</title>
+	<style>
+		* {
+			padding: 0;
+			margin: 0;
+		}
+		body {
+			background: #ccc;
+		}
+		#c {
+			background: #fff;
+		}
+	</style>
+</head>
+<script>
+	window.onload = function () {
+		var oC = document.getElementById('c');
+		var oC1 = oC.getContext('2d');
+
+		/* 	
+			oC1.moveTo(200,200);
+			arc(x,y,半径,起始弧度,结束弧度,旋转方向)
+			弧度 = 角度 * Math.PI / 180;
+			oC1.arc(200,200,150,0,45*Math.PI/180,false);
+			oC1.stroke();
+
+			oC1.moveTo(x,y);
+			oC1.arc(x,y,r,0,6*Math.PI/180,false);
+
+			oC1.moveTo(x,y);
+			oC1.arc(x,y,r,6,12*Math.PI/180,false);
+		*/
+		setInterval(toDraw,1000)
+		toDraw()
+		function toDraw() {
+			var x = 200;	// x轴坐标
+			var y = 200;	// y轴坐标
+			var r = 150;	// r 半径
+			// 清空画布
+			oC1.clearRect(0,0,oC.width,oC.height)
+			// 获取时间
+			var oDate = new Date();
+			var oHours = oDate.getHours();	//时
+			var oMin = oDate.getMinutes();	//分
+			var oSen = oDate.getSeconds();	//秒
+
+			var oHoursVal = (oHours*30 - 90 + oMin/2) * Math.PI/180;
+			var oMinVal = ( oMin*6 - 90) * Math.PI/180;
+			var oSenVal = ( oSen*6 - 90) * Math.PI/180;
+
+			// 绘制秒针表盘
+			oC1.beginPath();						
+			for( var i = 0; i<60; i++ ){
+				oC1.moveTo(x,y);					
+				oC1.arc(x,y,r,6*i*Math.PI/180,6*(i+1)*Math.PI/180,false);
+			}
+			oC1.closePath();						
+			oC1.stroke();	
+
+			// 绘制大圆盘 （覆盖）
+			oC1.fillStyle = "#fff";
+			oC1.beginPath();
+			oC1.moveTo(x,y);
+			oC1.arc(x,y,r*0.95,0,360*Math.PI/180,false);
+			oC1.closePath();
+			oC1.fill();
+
+			// 绘制分针表盘
+			oC1.lineWidth = 3;
+			oC1.beginPath();	
+			for( var i = 0; i<12; i++ ){
+				oC1.moveTo(x,y);	
+				oC1.arc(x,y,r,30*i*Math.PI/180,30*(i+1)*Math.PI/180,false);
+			}
+			oC1.closePath();	
+			oC1.stroke();
+			// 绘制大圆盘 （覆盖）
+			oC1.fillStyle = "#fff";
+			oC1.beginPath();
+			oC1.moveTo(x,y);
+			oC1.arc(x,y,r*0.9,0,360*Math.PI/180,false);
+			oC1.closePath();
+			oC1.fill();
+
+			// 绘制时针
+			oC1.lineWidth = 5;
+			oC1.beginPath();
+			oC1.moveTo(x,y);
+			oC1.arc(x,y,r*0.5,oHoursVal,oHoursVal,false);
+			oC1.closePath();
+			oC1.stroke();
+
+			// 绘制分针
+			oC1.lineWidth = 3;
+			oC1.beginPath();
+			oC1.moveTo(x,y);
+			oC1.arc(x,y,r*0.7,oMinVal,oMinVal,false);
+			oC1.closePath();
+			oC1.stroke();
+
+			// 绘制秒针
+			oC1.lineWidth = 1;
+			oC1.beginPath();
+			oC1.moveTo(x,y);
+			oC1.arc(x,y,r*0.8,oSenVal,oSenVal,false);
+			oC1.closePath();
+			oC1.stroke();
+
+			// 中心点
+			// 绘制大圆盘 （覆盖）
+			oC1.fillStyle = "red";
+			oC1.beginPath();
+			oC1.moveTo(x,y);
+			oC1.arc(x,y,r*0.05,0,360*Math.PI/180,false);
+			oC1.closePath();
+			oC1.fill();
+		}
+	}
+</script>
+<body>
+	<canvas id="c" height="400" width="400"></canvas>
+</body>
+</html>
